@@ -7,11 +7,11 @@ public class Training {
     private String shortDesc;
     private String imageURL;
 
-    public Training(int id, String name, String longDesc, String shortDesc, String imageURL) {
+    public Training(int id, String name, String shortDesc, String longDesc, String imageURL) {
         this.id = id;
         this.name = name;
-        this.longDesc = longDesc;
         this.shortDesc = shortDesc;
+        this.longDesc = longDesc;
         this.imageURL = imageURL;
     }
 
