@@ -1,6 +1,10 @@
 package org.williamsonministry.spiritualdisciplines;
 
+import static org.williamsonministry.spiritualdisciplines.TrainingActivity.TRAINING_KEY;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +39,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Log.d(TAG, "onBindViewHolder: Called");
 
         holder.activityName.setText(trainings.get(position).getName());
@@ -48,8 +52,9 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 10/21/2021 Navigate the User
-                Toast.makeText(mContext, "Yet to be completed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, TrainingActivity.class);
+                intent.putExtra(TRAINING_KEY, trainings.get(position));
+                mContext.startActivity(intent);
             }
         });
     }
