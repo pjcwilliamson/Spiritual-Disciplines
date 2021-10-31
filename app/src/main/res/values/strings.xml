@@ -3,4 +3,13 @@
     <string name="see_your_plans">See Your Plans</string>
     <string name="see_all_activities">See All Activities</string>
     <string name="about_us">About us</string>
+    <array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
 </resources>
