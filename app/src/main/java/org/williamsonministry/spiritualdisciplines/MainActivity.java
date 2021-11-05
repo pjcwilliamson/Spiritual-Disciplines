@@ -32,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnSeeYourPlans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PlanActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void initView() {

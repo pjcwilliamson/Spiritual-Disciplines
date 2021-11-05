@@ -2,6 +2,7 @@ package org.williamsonministry.spiritualdisciplines;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -23,6 +24,7 @@ public class PlanActivity extends AppCompatActivity {
     private RelativeLayout noPlanRelLayout;
     private NestedScrollView nestedScrollView;
     private Button btnAddPlan;
+    private PlanRecAdapter mondayAdapter, tuesdayAdapter, wedAdapter, thurAdapter, friAdapter, satAdapter, sunAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,13 @@ public class PlanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plan);
         initViews();
         ArrayList<Plan> plans = Utils.getPlans();
-        if (null != plans)  {
-            if (plans.size() > 0)   {
+        if (null != plans) {
+            if (plans.size() > 0) {
                 noPlanRelLayout.setVisibility(View.GONE);
                 nestedScrollView.setVisibility(View.VISIBLE);
-            }   else    {
+
+                initRecViews();
+            } else {
                 noPlanRelLayout.setVisibility(View.VISIBLE);
                 nestedScrollView.setVisibility(View.GONE);
                 btnAddPlan.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +50,7 @@ public class PlanActivity extends AppCompatActivity {
                     }
                 });
             }
-        }else   {
+        } else {
             noPlanRelLayout.setVisibility(View.VISIBLE);
             nestedScrollView.setVisibility(View.GONE);
             btnAddPlan.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +61,60 @@ public class PlanActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+        }
+    }
+
+    private void initRecViews() {
+        Log.d(TAG, "initRecViews: started");
+
+        mondayAdapter = new PlanRecAdapter(this);
+        mondayRecView.setAdapter(mondayAdapter);
+        mondayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mondayAdapter.setPlans(getDayPlans("Monday"));
+
+        tuesdayAdapter = new PlanRecAdapter(this);
+        tuesdayRecView.setAdapter(tuesdayAdapter);
+        tuesdayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        tuesdayAdapter.setPlans(getDayPlans("Tuesday"));
+
+        wedAdapter = new PlanRecAdapter(this);
+        wednesdayRecView.setAdapter(wedAdapter);
+        wednesdayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        wedAdapter.setPlans(getDayPlans("Wednesday"));
+
+        thurAdapter = new PlanRecAdapter(this);
+        thursdayRecView.setAdapter(thurAdapter);
+        thursdayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        thurAdapter.setPlans(getDayPlans("Thursday"));
+
+        friAdapter = new PlanRecAdapter(this);
+        fridayRecView.setAdapter(friAdapter);
+        fridayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        friAdapter.setPlans(getDayPlans("Friday"));
+
+        satAdapter = new PlanRecAdapter(this);
+        saturdayRecView.setAdapter(satAdapter);
+        saturdayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        satAdapter.setPlans(getDayPlans("Saturday"));
+
+        sunAdapter = new PlanRecAdapter(this);
+        sundayRecView.setAdapter(sunAdapter);
+        sundayRecView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        sunAdapter.setPlans(getDayPlans("Sunday"));
+    }
+
+    private ArrayList<Plan> getDayPlans(String day) {
+        ArrayList<Plan> plans = Utils.getPlans();
+        if (plans != null && plans.size()>0) {
+            ArrayList<Plan> dayPlans = new ArrayList<>();
+            for (Plan p: plans)  {
+                if (p.getDay().equalsIgnoreCase(day)) {
+                    dayPlans.add(p);
+                }
+            }
+            return dayPlans;
+        }   else {
+            return new ArrayList<Plan>();
         }
     }
 
