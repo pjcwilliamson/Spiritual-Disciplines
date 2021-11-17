@@ -3,14 +3,17 @@ package org.williamsonministry.spiritualdisciplines;
 import static org.williamsonministry.spiritualdisciplines.TrainingActivity.TRAINING_KEY;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +22,12 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 
 public class PlanRecAdapter extends RecyclerView.Adapter<PlanRecAdapter.ViewHolder> {
+
+    public interface RemovePlan {
+        void onRemovePlanResult(Plan plan);
+    }
+
+    private RemovePlan removePlan;
 
     private ArrayList<Plan> plans = new ArrayList<>();
     private Context mContext;
@@ -65,8 +74,62 @@ public class PlanRecAdapter extends RecyclerView.Adapter<PlanRecAdapter.ViewHold
         });
 
         if (type.equals("edit"))    {
+            holder.emptyCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                            .setTitle("Finished")
+                            .setMessage("Have you finished " + plans.get(position).getTraining().getName() + "?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
+                                }
+                            }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    for (Plan p: Utils.getPlans()){
+                                        if (p.equals(plans.get(position)))  {
+                                            p.setAccomplished(true);
+                                        }
+                                    }
+                                    notifyDataSetChanged();
+                                }
+                            });
+                    builder.create().show();
+
+                }
+            });
+
+            holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                            .setTitle("Remove")
+                            .setMessage("Are you sure you want to delete " + plans.get(position).getTraining().getName() + " from your plan?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        removePlan = (RemovePlan) mContext;
+                                        removePlan.onRemovePlanResult(plans.get(position));
+                                    }catch  (ClassCastException e)  {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                    builder.create().show();
+
+                    return true;
+                }
+            });
         }
+
     }
 
     @Override
