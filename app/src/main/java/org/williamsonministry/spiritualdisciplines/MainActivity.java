@@ -1,7 +1,9 @@
 package org.williamsonministry.spiritualdisciplines;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         Utils.initTrainings();
-
-        // TODO: 10/21/2021 Create onClickListeners
         
         btnAllTrainings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +37,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PlanActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("About")
+                        .setMessage("Created by Pete Williamson at https://williamsonministry.org/apps-made-by-me/\n" +
+                                "Visit for more")
+                        .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                
+                            }
+                        })
+                        .setPositiveButton("Visit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, WebsiteActivity.class);
+
+                                startActivity(intent);
+                            }
+                        });
+                builder.create().show();
             }
         });
 
